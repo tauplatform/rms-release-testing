@@ -11,6 +11,8 @@ install:
 
 script:
 - ./.ci/hosts/$TRAVIS_OS_NAME/install_rms.sh
+- "$TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/targets/$RHO_TARGET/rho_setup.sh"
+
 - git clone $(.ci/app_repo.rb) $HOME/$RHO_APP
 - cd $HOME/$RHO_APP/$(.ci/app_build_root.rb)
 - rake run:$RHO_TARGET
