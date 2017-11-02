@@ -1,0 +1,62 @@
+before_install:
+- $TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/hosts/$TRAVIS_OS_NAME/before_install.sh
+- $TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/targets/$RHO_TARGET/before_install.sh
+
+install:
+- rvm install 2.3.4
+- rvm use 2.3.4
+
+- $TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/hosts/$TRAVIS_OS_NAME/install.sh
+- $TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/targets/$RHO_TARGET/install.sh
+
+script:
+- ./.ci/hosts/$TRAVIS_OS_NAME/install_rms.sh
+- git clone $(.ci/app_repo.rb) $HOME/$RHO_APP
+- cd $HOME/$RHO_APP/$(.ci/app_build_root.rb)
+- rake run:$RHO_TARGET
+before_deploy:
+- mkdir $BUILD_ARTEFACTS_DIR
+- "$TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/targets/$RHO_TARGET/before_deploy.sh"
+deploy:
+  provider: s3
+  bucket: tau-autobuilds
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  skip_cleanup: true
+  local_dir: "$BUILD_ARTEFACTS_DIR"
+  upload-dir: '$S3_DEPLOY_DIR/$TRAVIS_OS_NAME-$RHO_TARGET-$RHO_APP'
+  acl: public_read
+  region: eu-central-1
+  on:
+    all_branches: true
+  
+android:
+  components:
+  - tools
+  - platform-tools
+  - sdkmanager tools
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository    
+  - android-${RHO_ANDROID_LEVEL:-19}
+  - addon-google_apis-google-${RHO_ANDROID_LEVEL:-19}
+
+env:
+  global:
+  - ANDROID_NDK_HOME=$HOME/android-ndk-r12b
+  - BUILD_ARTEFACTS_DIR=$HOME/build_artefacts
+  - S3_DEPLOY_DIR="$TRAVIS_REPO_SLUG"/"$(cat ./version)"
+
+matrix:
+  include:
+  - language: android
+    os: linux
+    env: RHO_TARGET="android"    RHO_APP="auto_common_spec"
+
+  - language: android
+    os: linux
+    env: RHO_TARGET="android"    RHO_APP="kitchenSinkJS"
+
+  - language: android
+    os: linux
+    env: RHO_TARGET="android"    RHO_APP="kitchenSinkRuby"
