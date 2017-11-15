@@ -1,0 +1,153 @@
+version: '{branch}.{build}'
+image: Visual Studio 2015
+platform: x86
+clone_folder: C:\TAU\rms-release-testing
+environment:
+  QTDIR: C:\Qt\5.8\msvc2015
+  BUILD_SERVER:
+    secure: XTPheAgrPK0Jw1x2XZk9VMQjm3OhuLDp7KtNW1X88sbki6EHPvqkylBKemc7CUv1
+  matrix:
+    #- win32_rhosimulator:
+    #  testable_application_repository: https://github.com/rhomobile/RMS-Testing.git
+    #  test_app_folder: C:\TAU\RMS-Testing\
+    #  test_app_subfolder: auto\feature_def\auto_common_spec\
+    #  build_command: "build:rhosimulator"
+    #  app_name: Rhosimulator
+    #  target_os: win32
+    #  target_artefact_path: C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-6.0.0\platform\win32\RhoSimulator\
+    #  target_artefact_file_name: RhoSimulator.exe
+
+    - win32_auto_common_spec:
+      testable_application_repository: https://github.com/rhomobile/RMS-Testing.git
+      test_app_folder: C:\TAU\RMS-Testing\
+      test_app_subfolder: auto\feature_def\auto_common_spec\
+      build_command: "device:win32:production"
+      app_name: auto_common_spec
+      target_os: win32
+      target_artefact_path: C:\TAU\RMS-Testing\auto\feature_def\auto_common_spec\bin\target\win32\
+      target_artefact_file_name: auto_common_spec-setup.exe
+
+    - uwp_auto_common_spec:
+      testable_application_repository: https://github.com/rhomobile/RMS-Testing.git
+      test_app_folder: C:\TAU\RMS-Testing\
+      test_app_subfolder: auto\feature_def\auto_common_spec\
+      build_command: "device:uwp:production"
+      app_name: auto_common_spec
+      target_os: uwp
+      target_artefact_path: C:\TAU\RMS-Testing\auto\feature_def\auto_common_spec\bin\target\uwp\
+      target_artefact_file_name: auto_common_spec.appx
+
+    - win32_kitchensinkJS:
+      testable_application_repository: https://github.com/tauplatform/kitchensinkJS.git
+      test_app_folder: C:\TAU\kitchensinkJS\
+      test_app_subfolder:
+      build_command: "device:win32:production"
+      app_name: KitchensinkJS
+      target_os: win32
+      target_artefact_path: C:\TAU\kitchensinkJS\bin\target\win32\
+      target_artefact_file_name: kitchensinkJS-setup.exe
+
+    - uwp_kitchensinkJS:
+      testable_application_repository: https://github.com/tauplatform/kitchensinkJS.git
+      test_app_folder: C:\TAU\kitchensinkJS\
+      test_app_subfolder:
+      build_command: "device:uwp:production"
+      app_name: KitchensinkJS
+      target_os: uwp
+      target_artefact_path: C:\TAU\kitchensinkJS\bin\target\uwp\
+      target_artefact_file_name: kitchensinkJS.appx
+
+    - win32_kitchensinkRuby:
+      testable_application_repository: https://github.com/tauplatform/kitchensinkRuby.git
+      test_app_folder: C:\TAU\kitchensinkRuby\
+      test_app_subfolder:
+      build_command: "device:win32:production"
+      app_name: KitchensinkRuby
+      target_os: win32
+      target_artefact_path: C:\TAU\kitchensinkRuby\bin\target\win32\
+      target_artefact_file_name: kitchensinkRuby-setup.exe
+
+    - uwp_kitchensinkRuby:
+      testable_application_repository: https://github.com/tauplatform/kitchensinkRuby.git
+      test_app_folder: C:\TAU\kitchensinkRuby\
+      test_app_subfolder:
+      build_command: "device:uwp:production"
+      app_name: KitchensinkRuby
+      target_os: uwp
+      target_artefact_path: C:\TAU\kitchensinkRuby\bin\target\uwp\
+      target_artefact_file_name: kitchensinkRuby.appx
+
+build: off
+
+install:
+  - set PATH=C:\Ruby23\bin;%PATH%
+  - set RAKEOPT=-rdevkit
+  - gem install rest-client --no-document
+  - gem install listen --no-document
+  - gem install zip --no-document
+  - gem install bundler --quiet --no-ri --no-rdoc
+  - bundler --version
+  
+before_test:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - set /P BUILD_VERSION=<version
+
+  - set /P RHODES_GEM rhodes-%BUILD_VERSION%.gem
+  - set /P RHOCONNECT_GEM rhoconnect-%BUILD_VERSION%.gem
+  - set /P RHOCONNECT_CLIENT_GEM rhoconnect-client-%BUILD_VERSION%.gem
+  - set /P RHO_TAU_EXTENSIONS_GEM rho-tau-extensions-%BUILD_VERSION%.gem
+
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHODES_GEM% %APPVEYOR_BUILD_FOLDER%
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHOCONNECT_GEM% %APPVEYOR_BUILD_FOLDER%
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHOCONNECT_CLIENT_GEM% %APPVEYOR_BUILD_FOLDER%
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHO_TAU_EXTENSIONS_GEM% %APPVEYOR_BUILD_FOLDER%
+
+  - gem install %RHODES_GEM% -f
+  - gem install %RHOCONNECT_GEM% -f
+  - gem install %RHOCONNECT_CLIENT_GEM% -f
+  - gem install %RHO_TAU_EXTENSIONS_GEM% -f
+
+  - ruby -v
+  - gem -v
+  - bundle -v
+  - cp rhobuild.yml.example rhobuild.yml
+
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - nuget restore C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\platform\uwp\rhodes_dev.sln
+
+  - cd C:\TAU\
+  - rmdir /Q /S %APPVEYOR_BUILD_FOLDER%
+
+
+test_script:
+  - git clone -b master %testable_application_repository% %test_app_folder%
+  - cd %test_app_folder%
+  - cd %test_app_subfolder%
+  - rake clean:win32
+  - rake clean:uwp
+  - rake %build_command%
+  - md %APPVEYOR_BUILD_FOLDER%\target\
+  - copy %target_artefact_path%%target_artefact_file_name% %APPVEYOR_BUILD_FOLDER%\target\
+  - cd %APPVEYOR_BUILD_FOLDER%\target\
+  - dir
+  - echo %APPVEYOR_REPO_NAME%/%BUILD_VERSION%/win32-%target_os%-%app_name%
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+artifacts: 
+  - path: .\target\
+    name: '${target_artefact_file_name}'
+
+deploy:
+  - provider: S3
+    access_key_id:  
+      secure: fFmP8gYR1DMOW5FXm6cQRJhVD5FaVloapxjY/gVEjI0=
+      #secure: j0N6vl5f9UckCbJkHmZiXNuFphMI3cud+NDTCQm/I2c=
+    secret_access_key:
+      secure: K5ApOYLqvRXJ/uhS9wFOCko03DrzJriLYnKOTCYfBw0eTiox+0uvFVQBE6cof3TA
+      #secure: WzHfCbltmZTLnQxLo5/3BzBLHLnuiMIK6aDkoB10by58eOngCcTKvHJUGbtkfcsp
+    bucket: tau-autobuilds
+    region: eu-central-1
+    folder: '$(APPVEYOR_REPO_NAME)/$(BUILD_VERSION)/win32-$(target_os)-$(app_name)'
+    artifact: /.*/
+    set_public: true
+    max_error_retry: 5
