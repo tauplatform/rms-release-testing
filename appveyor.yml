@@ -92,10 +92,10 @@ before_test:
   - cd %APPVEYOR_BUILD_FOLDER%
   - set /P BUILD_VERSION=<version
 
-  - set /P RHODES_GEM rhodes-%BUILD_VERSION%.gem
-  - set /P RHOCONNECT_GEM rhoconnect-%BUILD_VERSION%.gem
-  - set /P RHOCONNECT_CLIENT_GEM rhoconnect-client-%BUILD_VERSION%.gem
-  - set /P RHO_TAU_EXTENSIONS_GEM rho-tau-extensions-%BUILD_VERSION%.gem
+  - set /P RHODES_GEM=rhodes-%BUILD_VERSION%.gem
+  - set /P RHOCONNECT_GEM=rhoconnect-%BUILD_VERSION%.gem
+  - set /P RHOCONNECT_CLIENT_GEM=rhoconnect-client-%BUILD_VERSION%.gem
+  - set /P RHO_TAU_EXTENSIONS_GEM=rho-tau-extensions-%BUILD_VERSION%.gem
 
   - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHODES_GEM% %APPVEYOR_BUILD_FOLDER%
   - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHOCONNECT_GEM% %APPVEYOR_BUILD_FOLDER%
