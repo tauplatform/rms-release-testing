@@ -103,12 +103,11 @@ before_test:
 
   #- echo y | pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/rho-tau-extensions-%BUILD_VERSION%.gem %APPVEYOR_BUILD_FOLDER%
   #- gem install rho-tau-extensions-%BUILD_VERSION%.gem -f
-    
 
   - ruby -v
   - gem -v
   - bundle -v
-  - cp rhobuild.yml.example rhobuild.yml
+  - cp C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml.example C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml
 
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - nuget restore C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\platform\uwp\rhodes_dev.sln
