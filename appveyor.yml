@@ -92,20 +92,15 @@ before_test:
   - cd %APPVEYOR_BUILD_FOLDER%
   - set /P BUILD_VERSION=<version
 
-  - set /P RHODES_GEM=rhodes-%BUILD_VERSION%.gem
-  - set /P RHOCONNECT_GEM=rhoconnect-%BUILD_VERSION%.gem
-  - set /P RHOCONNECT_CLIENT_GEM=rhoconnect-client-%BUILD_VERSION%.gem
-  - set /P RHO_TAU_EXTENSIONS_GEM=rho-tau-extensions-%BUILD_VERSION%.gem
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/rhodes-%BUILD_VERSION%.gem %APPVEYOR_BUILD_FOLDER%
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/rhoconnect-%BUILD_VERSION%.gem %APPVEYOR_BUILD_FOLDER%
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/rhoconnect-client-%BUILD_VERSION%.gem %APPVEYOR_BUILD_FOLDER%
+  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/rho-tau-extensions-%BUILD_VERSION%.gem %APPVEYOR_BUILD_FOLDER%
 
-  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHODES_GEM% %APPVEYOR_BUILD_FOLDER%
-  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHOCONNECT_GEM% %APPVEYOR_BUILD_FOLDER%
-  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHOCONNECT_CLIENT_GEM% %APPVEYOR_BUILD_FOLDER%
-  - pscp -pw %BUILD_SERVER%:/Volumes/TAU_STORAGE/BUILD_ARTEFACTS/%BUILD_VERSION%/%RHO_TAU_EXTENSIONS_GEM% %APPVEYOR_BUILD_FOLDER%
-
-  - gem install %RHODES_GEM% -f
-  - gem install %RHOCONNECT_GEM% -f
-  - gem install %RHOCONNECT_CLIENT_GEM% -f
-  - gem install %RHO_TAU_EXTENSIONS_GEM% -f
+  - gem install rhodes-%BUILD_VERSION%.gem -f
+  - gem install rhoconnect-%BUILD_VERSION%.gem -f
+  - gem install rhoconnect-client-%BUILD_VERSION%.gem -f
+  - gem install rho-tau-extensions-%BUILD_VERSION%.gem -f
 
   - ruby -v
   - gem -v
