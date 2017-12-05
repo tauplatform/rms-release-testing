@@ -2,6 +2,10 @@ version: '{branch}.{build}'
 image: Visual Studio 2015
 platform: x86
 clone_folder: C:\TAU\rms-release-testing
+
+skip_commits:
+  message: /^5\.5.*$/
+
 environment:
   QTDIR: C:\Qt\5.8\msvc2015
   BUILD_SERVER:
