@@ -6,5 +6,5 @@ if [[ $VERSION == 5* ]];
 then
 	rake device:android:debug
 else
-	rake run:android
+	rake run:android --trace
 fi
