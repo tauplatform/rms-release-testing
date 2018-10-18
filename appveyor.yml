@@ -9,7 +9,7 @@ skip_commits:
 environment:
   QTDIR: C:\Qt\5.9.5\msvc2015
   BUILD_SERVER:
-    secure: XTPheAgrPK0Jw1x2XZk9VEiasHqelC5bawrpFe6A/ktFccPObhok+LR3Bhlv18JN
+    secure: zvU942aX1duzdhb0hPXtrVXyDFOt51YiPF6PFn5rbiGg7uzurLc6RExJIjnXyAot
   matrix:
     #- win32_rhosimulator:
     #  testable_application_repository: https://github.com/rhomobile/RMS-Testing.git
