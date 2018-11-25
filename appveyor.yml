@@ -7,7 +7,7 @@ skip_commits:
   message: /^5\.5.*$/
 
 environment:
-  QTDIR: C:\Qt\5.9.5\msvc2015
+  QTDIR: C:\Qt\5.9\msvc2015
   BUILD_SERVER:
     secure: XTPheAgrPK0Jw1x2XZk9VGJue89hQ5/Eh+e2IBB5DWozLjGqCqstuwlaMeocbmjU
   matrix:
