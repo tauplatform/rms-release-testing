@@ -8,6 +8,7 @@ before_install:
 - $TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/targets/$RHO_TARGET/before_install.sh
 
 install:
+- ANDROID_NDK_HOME="${HOME}/android-ndk-r${NDK_NUMBER}"
 - rvm install 2.3.4
 - rvm use 2.3.4
 
@@ -15,6 +16,7 @@ install:
 - $TRAVIS_BUILD_DIR/.ci/safe_run.sh $TRAVIS_BUILD_DIR/.ci/targets/$RHO_TARGET/install.sh
 
 script:
+- ANDROID_NDK_HOME="${HOME}/android-ndk-r${NDK_NUMBER}"
 - ./.ci/hosts/$TRAVIS_OS_NAME/install_rms.sh
 
 - cd $HOME
