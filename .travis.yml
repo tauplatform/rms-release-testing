@@ -59,7 +59,6 @@ android:
 
 env:
   global:
-  - ANDROID_NDK_HOME=$HOME/android-ndk-r15c
   - BUILD_ARTEFACTS_DIR=$HOME/build_artefacts
   - S3_DEPLOY_DIR="$TRAVIS_REPO_SLUG"/"$(cat ./version)"
 
@@ -67,12 +66,12 @@ matrix:
   include:
   - language: android
     os: linux
-    env: RHO_TARGET="android"    RHO_APP="auto_common_spec"
+    env: RHO_TARGET="android"    RHO_APP="auto_common_spec"  NDK_NUMBER="17c"
 
   - language: android
     os: linux
-    env: RHO_TARGET="android"    RHO_APP="kitchenSinkJS"
+    env: RHO_TARGET="android"    RHO_APP="kitchenSinkJS"  NDK_NUMBER="17c"
 
   - language: android
     os: linux
-    env: RHO_TARGET="android"    RHO_APP="kitchenSinkRuby"
+    env: RHO_TARGET="android"    RHO_APP="kitchenSinkRuby"  NDK_NUMBER="17c"
