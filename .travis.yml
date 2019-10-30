@@ -68,12 +68,12 @@ matrix:
   include:
   - language: android
     os: linux
-    env: RHO_TARGET="android"    RHO_APP="auto_common_spec"  NDK_NUMBER="17c"
+    env: RHO_TARGET="android"    RHO_APP="auto_common_spec"  NDK_NUMBER="20"
 
   - language: android
     os: linux
-    env: RHO_TARGET="android"    RHO_APP="kitchenSinkJS"  NDK_NUMBER="17c"
+    env: RHO_TARGET="android"    RHO_APP="kitchenSinkJS"  NDK_NUMBER="20"
 
   - language: android
     os: linux
-    env: RHO_TARGET="android"    RHO_APP="kitchenSinkRuby"  NDK_NUMBER="17c"
+    env: RHO_TARGET="android"    RHO_APP="kitchenSinkRuby"  NDK_NUMBER="20"
