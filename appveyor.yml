@@ -73,9 +73,6 @@ before_test:
   - bundle -v
   - cp C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml.example C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml
 
-  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - nuget restore C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\platform\uwp\rhodes_dev.sln
-
   - cd C:\TAU\
   - rmdir /Q /S %APPVEYOR_BUILD_FOLDER%
 
