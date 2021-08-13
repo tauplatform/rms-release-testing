@@ -44,7 +44,7 @@ environment:
 build: off
 
 install:
-  - set PATH=C:\Ruby23\bin;%PATH%
+  - set PATH=C:\Ruby26\bin;%PATH%
   - set RAKEOPT=-rdevkit
   - gem install rest-client --no-document
   - gem install listen --no-document
@@ -71,7 +71,7 @@ before_test:
   - ruby -v
   - gem -v
   - bundle -v
-  - cp C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml.example C:\Ruby23\lib\ruby\gems\2.3.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml
+  - cp C:\Ruby26\lib\ruby\gems\2.6.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml.example C:\Ruby26\lib\ruby\gems\2.6.0\gems\rhodes-%BUILD_VERSION%\rhobuild.yml
 
   - cd C:\TAU\
   - rmdir /Q /S %APPVEYOR_BUILD_FOLDER%
@@ -82,7 +82,6 @@ test_script:
   - cd %test_app_folder%
   - cd %test_app_subfolder%
   - rake clean:win32
-  - rake clean:uwp
   - rake %build_command%
   - md %APPVEYOR_BUILD_FOLDER%\target\
   - copy %target_artefact_path%%target_artefact_file_name% %APPVEYOR_BUILD_FOLDER%\target\
